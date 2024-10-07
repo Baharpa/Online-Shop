@@ -1,11 +1,36 @@
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+    }
+}
+
+
 body {
-    background-color: #f0f8ff; /* Light blue background */
+    background-color: #f7f7f7;
+    color: #333; 
+    font-family: 'Roboto', sans-serif; 
+    padding: 20px;
 }
-h2 {
-    color: #6dbb9c; /* Tomato color for headings */
+
+h1, h2 {
+    color: #38046f; 
+    text-transform: uppercase;
 }
+
 p {
     font-size: 18px;
     line-height: 1.6;
-    color: #333;
+    color: #0f1256;
 }
+
+.navbar-nav .nav-link {
+    color: #f9ccef; 
+    font-weight: bold;
+    transition: color 0.3s ease; 
+}
+
+
+.navbar-nav .nav-link:hover {
+    color: #ffffff; 
+    background-color: #9ea9ed; 
+    border-radius: 4px; }
