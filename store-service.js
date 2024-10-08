@@ -10,7 +10,7 @@ module.exports = {
     getCategories
 };
 
-
+//
 function getAllItems() {
     return new Promise((resolve, reject) => {
         if (items.length === 0) {
