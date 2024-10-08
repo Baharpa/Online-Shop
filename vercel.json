@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "routes": [
+      { "src": "/", "dest": "/index.html" },
+      { "src": "/shop", "dest": "/shop.html" },
+      { "src": "/items", "dest": "/items.html" },
+      { "src": "/categories", "dest": "/categories.html" },
+      { "src": "/(.*)", "status": 404, "dest": "/404.html" }
+    ]
+  }
+  
