@@ -8,38 +8,66 @@
         <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-ZXnQW4lBpz7g9m+p4cMA9Rz+PoeKExL5Pa/mVwz1X4Gp9UgS6OjbrT/4dNKTJTIc" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/main.css">
         <title>About</title>
+        <style>
+            
+            .navbar {
+                background-color: #333333;
+            }
+
+           
+            .nav-item {
+                display: inline-block;
+                padding: 10px;
+            }
+
+      
+            .navbar-brand {
+                font-size: 1.5em;
+                font-weight: bold;
+                color: white;
+            }
+
+            .navbar-container {
+                border-radius: 10px;
+                padding: 30px;
+            }
+
+            .container {
+                padding-top: 50px;
+            }
+        </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid navbar-container">
+                <a class="navbar-brand" href="#">WEB322 - Bahar Parsaeian</a>
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="#">WEB322 - Bahar Parsaeian</a>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="/shop">Shop</a>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/about">About</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/items">Items</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/categories">Categories</a>
                         </li>
+                        <!-- Link to trigger a 404 page (for testing) -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/non-existent-page">Broken Link (404)</a>
+                        </li>
                     </ul>
                 </div>
-                <!-- /.navbar-collapse -->
+            
             </div>
-            <!-- /.container-fluid -->
+            
         </nav>
+
         <div class="container" style="padding-top: 90px;">
             <div class="row">
                 <aside class="col-md-3">
