@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/baharpa/web322-app#readme",
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^2.5.11"
   }
 }
