@@ -5,13 +5,12 @@ const app = express();
 
 app.use(express.static('public'));
 
-
 app.get('/', (req, res) => {
     res.redirect('/about');
 });
 
 app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'about.html'));
+    res.sendFile(path.join(__dirname, 'views/about.html'));
 });
 
 app.get('/shop', (req, res) => {
@@ -33,16 +32,14 @@ app.get('/categories', (req, res) => {
 });
 
 app.use((req, res) => {
-    res.status(404).send("Page Not Found");
+    res.status(404).send('Page Not Found');
 });
 
-
-const PORT = process.env.PORT || 8080;
-
+const port = process.env.PORT || 8080;
 storeService.initialize()
     .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Express http server listening on port ${PORT}`);
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
         });
     })
     .catch(err => {
