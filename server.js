@@ -1,13 +1,4 @@
-/*WEB322 – Assignment 02 & 3
-I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
-been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
-Name: Bahar Parsaeian
-Student ID: 118314210
-Date: 2024-10-09
-Render Web App URL:    https://web322-app-bohj.onrender.com
-GitHub Repository URL: https://github.com/Baharpa/web322-app
-SSH:                   git@github.com:Baharpa/web322-app.git
-********************************************************************************/
+
 const express = require('express');
 const path = require('path');
 const storeService = require('./store-service');
@@ -19,9 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 cloudinary.config({
-  cloud_name: 'YOUR_CLOUD_NAME',
-  api_key: 'YOUR_API_KEY',
-  api_secret: 'YOUR_API_SECRET',
+  cloud_name: 'db92vv0cb',       // replace with your actual Cloud Name
+  api_key: '523132737832711',    // replace with your actual API Key
+  api_secret: 'LCrqnyMac4Z0Sbozx1kYImYo_TM',  // replace with your actual API Secret
   secure: true
 });
 
@@ -83,11 +74,15 @@ app.post('/items/add', upload.single('featureImage'), (req, res) => {
 
     async function upload(req) {
       let result = await streamUpload(req);
+      console.log("Uploaded image URL:", result.url);  // Logs the URL of uploaded image
       return result;
     }
 
     upload(req).then((uploaded) => {
       processItem(uploaded.url);
+    }).catch((error) => {
+      console.error("Cloudinary upload error:", error);
+      res.status(500).send("Error uploading image");
     });
   } else {
     processItem("");
