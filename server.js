@@ -1,4 +1,3 @@
-
 /*WEB322 – Assignment 02 & 3
 I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
 been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
@@ -61,6 +60,13 @@ app.get('/items', (req, res) => {
   }
 });
 
+app.get('/item/:value', (req, res) => {
+  const itemId = parseInt(req.params.value);
+  storeService.getItemById(itemId)
+    .then(data => res.json(data))
+    .catch(err => res.status(404).json({ message: "Item not found" }));
+});
+
 app.get('/categories', (req, res) => {
   storeService.getCategories()
     .then(data => res.json(data))
@@ -85,7 +91,7 @@ app.post('/items/add', upload.single('featureImage'), (req, res) => {
 
     async function upload(req) {
       let result = await streamUpload(req);
-      console.log("Uploaded image URL:", result.url);  // Logs the URL of uploaded image
+      console.log("Uploaded image URL:", result.url);
       return result;
     }
 
