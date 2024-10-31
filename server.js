@@ -10,9 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 cloudinary.config({
-  cloud_name: 'db92vv0cb',       // replace with your actual Cloud Name
-  api_key: '523132737832711',    // replace with your actual API Key
-  api_secret: 'LCrqnyMac4Z0Sbozx1kYImYo_TM',  // replace with your actual API Secret
+  cloud_name: 'db92vv0cb',       
+  api_key: '523132737832711',    
+  api_secret: 'LCrqnyMac4Z0Sbozx1kYImYo_TM', 
   secure: true
 });
 
