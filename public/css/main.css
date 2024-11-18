@@ -28,8 +28,54 @@ p {
     transition: color 0.3s ease; 
 }
 
-
 .navbar-nav .nav-link:hover {
     color: #ffffff; 
     background-color: #9ea9ed; 
     border-radius: 4px; }
+
+.navbar {
+        background-color: #333333;
+}
+    
+.nav-item {
+        display: inline-block;
+        padding: 10px;
+}
+    
+.navbar-brand {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+}
+    
+.navbar-container {
+        border-radius: 10px;
+        padding: 30px;
+}
+    
+.container {
+        padding-top: 50px;
+}
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2a5f3;
+    color: #ffffff;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #afb4ff;
+}
+
+.table tbody tr:hover {
+    background-color: #ffe8fe;
+}

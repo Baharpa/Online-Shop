@@ -37,6 +37,14 @@ function getPublishedItems() {
   });
 }
 
+function getPublishedItemsByCategory(category) {
+  return new Promise((resolve, reject) => {
+    const publishedItems = items.filter(item => item.published === true && item.category === parseInt(category));
+    if (publishedItems.length > 0) resolve(publishedItems);
+    else reject('No results returned');
+  });
+}
+
 function getCategories() {
   return new Promise((resolve, reject) => {
     if (categories.length > 0) resolve(categories);
@@ -48,6 +56,7 @@ function addItem(itemData) {
   return new Promise((resolve, reject) => {
     itemData.published = itemData.published ? true : false;
     itemData.id = items.length + 1;
+    itemData.postDate = new Date().toISOString().split('T')[0];
     items.push(itemData);
     resolve(itemData);
   });
@@ -71,7 +80,7 @@ function getItemsByMinDate(minDateStr) {
 
 function getItemById(id) {
   return new Promise((resolve, reject) => {
-    const item = items.find(item => item.id === id);
+    const item = items.find(item => item.id === parseInt(id));
     if (item) resolve(item);
     else reject("no result returned");
   });
@@ -84,6 +93,7 @@ module.exports = {
   getCategories,
   addItem,
   getItemsByCategory,
+  getPublishedItemsByCategory,
   getItemsByMinDate,
   getItemById
 };
