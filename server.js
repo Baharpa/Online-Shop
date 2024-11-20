@@ -3,10 +3,10 @@ I declare that this assignment is my own work in accordance with Seneca Academic
 been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
 
 
-Name: Bahar Parsaeian
-Student ID: 118314210
-Date: 2024-10-09
-Render Web App URL:    https://web322-app-bohj.onrender.com/about
+Name:                  Bahar Parsaeian
+Student ID:            118314210
+Date:                  2024-11-19
+Render Web App URL:    https://web322-app-bohj.onrender.com/shop
 GitHub Repository URL: https://github.com/Baharpa/web322-app
 SSH:                   git@github.com:Baharpa/web322-app.git
 ********************************************************************************/
