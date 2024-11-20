@@ -1,3 +1,15 @@
+/*WEB322 – Assignment 4, 3 & 2
+I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
+been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
+
+
+Name: Bahar Parsaeian
+Student ID: 118314210
+Date: 2024-10-09
+Render Web App URL:    https://web322-app-bohj.onrender.com/about
+GitHub Repository URL: https://github.com/Baharpa/web322-app
+SSH:                   git@github.com:Baharpa/web322-app.git
+********************************************************************************/
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -8,6 +20,7 @@ const storeService = require('./store-service');
 const handlebars = require('express-handlebars');
 
 const app = express();
+
 const PORT = process.env.PORT || 8080;
 
 cloudinary.config({
@@ -16,6 +29,8 @@ cloudinary.config({
     api_secret: 'LCrqnyMac4Z0Sbozx1kYImYo_TM',
     secure: true
 });
+
+
 const upload = multer();
 
 const exphbs = handlebars.create({
