@@ -79,3 +79,81 @@ p {
 .table tbody tr:hover {
     background-color: #ffe8fe;
 }
+
+.MYITEMMM {
+    border: 8px solid #e1bcff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    background: #dbdffd;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: slide-in 0.6s ease-out;
+    text-align: left; 
+  }
+  
+  .MYITEMMM label {
+    font-size: 1.4rem;
+    display: inline-block; 
+    margin-bottom: 10px;
+    width: 30%; 
+    vertical-align: middle; 
+  }
+  
+  .MYITEMMM input,
+  .MYITEMMM textarea,
+  .MYITEMMM select {
+    font-size: 1.2rem;
+    padding: 10px;
+    width: 65%; 
+    margin-bottom: 20px;
+    display: inline-block; 
+    vertical-align: middle; 
+  }
+  
+  .MYITEMMM textarea {
+    resize: vertical; 
+  }
+  
+  .MYITEMMM button {
+    font-size: 1.4rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #6839f6;
+    color: rgb(218, 201, 220);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .MYITEMMM button:hover {
+    background-color: #5146d3;
+  }
+  
+  .forDescription {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    max-width: 400px; 
+    word-wrap: break-word;
+    white-space: normal; 
+    display: block;
+}
+
+
+.shopMIDDLE {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    border: 8px solid #97baff; 
+    border-radius: 10px;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
