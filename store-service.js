@@ -13,7 +13,12 @@ const sequelize = new Sequelize("shop", "shop_owner", "HI52KYJemuwS", {
     query: { raw: true },
 });
 
+
 const Item = sequelize.define('Item', {
+  title: {
+    type: Sequelize.STRING,
+    unique: true, 
+},
   body: Sequelize.TEXT,
   title: Sequelize.STRING,
   postDate: Sequelize.DATE,
@@ -77,7 +82,6 @@ const getItemById = (id) => {
           .catch(err => reject('No results returned: ' + err));
   });
 };
-
 const addPost = (itemData) => {
   return new Promise((resolve, reject) => {
       itemData.published = itemData.published ? true : false;
@@ -90,11 +94,28 @@ const addPost = (itemData) => {
 
       itemData.postDate = new Date();
 
-      Item.create(itemData)
-          .then(data => resolve(data))
-          .catch(err => reject('Unable to create post: ' + err));
+      // Check for unique title
+      Item.findOne({ where: { title: itemData.title } })
+          .then(existingItem => {
+              if (existingItem) {
+                  reject("Title already exists. Please choose a different title.");
+              } else {
+                  Item.create(itemData)
+                      .then(data => resolve(data))
+                      .catch(err => {
+                          console.error("Sequelize validation error:", err);
+                          reject("Unable to create post: " + err.message);
+                      });
+              }
+          })
+          .catch(err => {
+              console.error("Error checking for unique title:", err);
+              reject("Error checking for unique title: " + err.message);
+          });
   });
 };
+
+
 
 const getPublishedItems = () => {
   return new Promise((resolve, reject) => {
@@ -127,12 +148,26 @@ const addCategory = (categoryData) => {
               categoryData[key] = null;
           }
       }
-      Category.create(categoryData)
-          .then(data => resolve(data))
-          .catch(err => reject('Unable to create category: ' + err));
+
+      Category.findOne({ where: { category: categoryData.category } })
+          .then(existingCategory => {
+              if (existingCategory) {
+                  reject("Category already exists. Please choose a different name.");
+              } else {
+                  Category.create(categoryData)
+                      .then(data => resolve(data))
+                      .catch(err => {
+                          console.error("Sequelize validation error:", err);
+                          reject("Unable to create category: " + err.message);
+                      });
+              }
+          })
+          .catch(err => {
+              console.error("Error checking for unique category:", err);
+              reject("Error checking for unique category: " + err.message);
+          });
   });
 };
-
 const deleteCategoryById = (id) => {
   return new Promise((resolve, reject) => {
       Category.destroy({where : { id } })
