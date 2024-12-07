@@ -1,99 +1,171 @@
-const fs = require('fs');
-const path = require('path');
+const Sequelize = require('sequelize');
 
-let items = [];
-let categories = [];
+const sequelize = new Sequelize("shop", "shop_owner", "HI52KYJemuwS", {
+    host: "ep-green-lab-a53ohy4h.us-east-2.aws.neon.tech",
+    dialect: "postgres",
+    port: 5432,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false, 
+        },
+    },
+    query: { raw: true },
+});
 
-function initialize() {
+const Item = sequelize.define('Item', {
+  body: Sequelize.TEXT,
+  title: Sequelize.STRING,
+  postDate: Sequelize.DATE,
+  featureImage: Sequelize.STRING,
+  published: Sequelize.BOOLEAN,
+  price: Sequelize.DOUBLE
+});
+
+const Category = sequelize.define('Category', {
+  category: Sequelize.STRING
+});
+
+Item.belongsTo(Category, { foreignKey: 'category' });
+
+const initialize = () => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.join(__dirname, 'data', 'items.json'), 'utf8', (err, data) => {
-      if (err) reject('Unable to read file: items.json');
-      else {
-        items = JSON.parse(data);
-        fs.readFile(path.join(__dirname, 'data', 'categories.json'), 'utf8', (err, data) => {
-          if (err) reject('Unable to read file: categories.json');
-          else {
-            categories = JSON.parse(data);
-            resolve();
+      sequelize.sync()
+          .then(() => resolve('Database synced successfully!'))
+          .catch(err => reject('Unable to sync the database: ' + err));
+  });
+};
+
+const getAllItems = () => {
+  return new Promise((resolve, reject) => {
+      Item.findAll()
+          .then(data => resolve(data))
+          .catch(err => reject('No items returned: ' + err));
+  });
+};
+
+const getItemsByCategory = (category) => {
+  return new Promise((resolve, reject) => {
+      Item.findAll({ where: { category } })
+          .then(data => resolve(data))
+          .catch(err => reject('No results returned: ' + err));
+  });
+};
+
+const getItemsByMinDate = (minDateStr) => {
+  const { gte } = Sequelize.Op;
+  return new Promise((resolve, reject) => {
+      Item.findAll({
+          where: {
+              postDate: {
+                  [gte]: new Date(minDateStr)
+              }
           }
-        });
+      })
+          .then(data => resolve(data))
+          .catch(err => reject('No results returned: ' + err));
+  });
+};
+
+const getItemById = (id) => {
+  return new Promise((resolve, reject) => {
+      Item.findByPk(id)
+          .then(data => {
+              if (data) resolve(data);
+              else reject('No results returned');
+          })
+          .catch(err => reject('No results returned: ' + err));
+  });
+};
+
+const addPost = (itemData) => {
+  return new Promise((resolve, reject) => {
+      itemData.published = itemData.published ? true : false;
+
+      for (const key in itemData) {
+          if (itemData[key] === '') {
+              itemData[key] = null;
+          }
       }
-    });
-  });
-}
 
-function getAllItems() {
-  return new Promise((resolve, reject) => {
-    if (items.length > 0) resolve(items);
-    else reject('No results returned');
-  });
-}
+      itemData.postDate = new Date();
 
-function getPublishedItems() {
-  return new Promise((resolve, reject) => {
-    const publishedItems = items.filter(item => item.published === true);
-    if (publishedItems.length > 0) resolve(publishedItems);
-    else reject('No results returned');
+      Item.create(itemData)
+          .then(data => resolve(data))
+          .catch(err => reject('Unable to create post: ' + err));
   });
-}
+};
 
-function getPublishedItemsByCategory(category) {
+const getPublishedItems = () => {
   return new Promise((resolve, reject) => {
-    const publishedItems = items.filter(item => item.published === true && item.category === parseInt(category));
-    if (publishedItems.length > 0) resolve(publishedItems);
-    else reject('No results returned');
+      Item.findAll({ where: { published: true } })
+          .then(data => resolve(data))
+          .catch(err => reject('No results returned: ' + err));
   });
-}
+};
 
-function getCategories() {
+const getPublishedItemsByCategory = (category) => {
   return new Promise((resolve, reject) => {
-    if (categories.length > 0) resolve(categories);
-    else reject('No results returned');
+      Item.findAll({ where: { published: true, category } })
+          .then(data => resolve(data))
+          .catch(err => reject('No results returned: ' + err));
   });
-}
+};
 
-function addItem(itemData) {
+const getCategories = () => {
   return new Promise((resolve, reject) => {
-    itemData.published = itemData.published ? true : false;
-    itemData.id = items.length + 1;
-    itemData.postDate = new Date().toISOString().split('T')[0];
-    items.push(itemData);
-    resolve(itemData);
+      Category.findAll()
+          .then(data => resolve(data))
+          .catch(err => reject('No categories returned: ' + err));
   });
-}
+};
 
-function getItemsByCategory(category) {
+const addCategory = (categoryData) => {
   return new Promise((resolve, reject) => {
-    const filteredItems = items.filter(item => item.category === parseInt(category));
-    if (filteredItems.length > 0) resolve(filteredItems);
-    else reject("no results returned");
+      for (const key in categoryData) {
+          if (categoryData[key] === '') {
+              categoryData[key] = null;
+          }
+      }
+      Category.create(categoryData)
+          .then(data => resolve(data))
+          .catch(err => reject('Unable to create category: ' + err));
   });
-}
+};
 
-function getItemsByMinDate(minDateStr) {
+const deleteCategoryById = (id) => {
   return new Promise((resolve, reject) => {
-    const filteredItems = items.filter(item => new Date(item.postDate) >= new Date(minDateStr));
-    if (filteredItems.length > 0) resolve(filteredItems);
-    else reject("no results returned");
+      Category.destroy({where : { id } })
+          .then((deleted) => {
+              if (deleted) resolve();
+              else reject('Category not found!');
+          })
+          .catch(err => reject('Unable to remove category: ' + err));
   });
-}
+};
 
-function getItemById(id) {
+const deletePostById = (id) => {
   return new Promise((resolve, reject) => {
-    const item = items.find(item => item.id === parseInt(id));
-    if (item) resolve(item);
-    else reject("no result returned");
+      Item.destroy({where : { id } })
+          .then((deleted) => {
+              if (deleted) resolve();
+              else reject('Post not found!');
+          })
+          .catch(err => reject('Unable to remove post: ' + err));
   });
-}
+};
 
 module.exports = {
   initialize,
   getAllItems,
-  getPublishedItems,
-  getCategories,
-  addItem,
   getItemsByCategory,
-  getPublishedItemsByCategory,
   getItemsByMinDate,
-  getItemById
+  getItemById,
+  addPost,
+  getPublishedItems,
+  getPublishedItemsByCategory,
+  getCategories,
+  addCategory,
+  deleteCategoryById,
+  deletePostById
 };
