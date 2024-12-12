@@ -12,33 +12,63 @@
     />
     <link rel="stylesheet" href="/css/main.css" />
 
-    <title> {{title}} </title>
-    <link rel="icon" href="/favicon_io/shopping-cart.ico" type="image/png">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container-fluid">
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">WEB322 - Bahar Parsaeian</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    {{#navLink "/shop"}}Shop{{/navLink}}
-                    {{#navLink "/about"}}About{{/navLink}}
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    {{#navLink "/items"}}Items{{/navLink}}
+            <title> {{title}} </title>
+            <link rel="icon" href="/favicon_io/shopping-cart.ico" type="image/png">
+        </head>
+         <body>
+            <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+                <div class="container-fluid">
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">WEB322 - Bahar Parsaeian</a>
+                    <div class="collapse navbar-collapse row" id="navbarNav">
+                        <div class = "col-8">
+                        <ul class="navbar-nav">
+                            {{#navLink "/shop"}}Shop{{/navLink}}
+                            {{#navLink "/about"}}About{{/navLink}}
+                            </div>
+                            </ul>
+                        </div>
+                    
+                        <div class = "col-4">
+               {{#if session.user}}
+                        <ul class="navbar-nav">
+                    {{#navLink "/items"}}Posts{{/navLink}}
+
                     {{#navLink "/categories"}}Categories{{/navLink}}
-                </ul>
+
+                        <form class="navbar-form navbar-right mt-2" >
+                            
+
+                        <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        &nbsp;&nbsp;{{session.user.userName}}&nbsp;&nbsp;
+                        </button>
+                        <ul class="dropdown-menu">
+                        <a class="dropdown-item" href="/userHistory">User History</a>
+                        <a class="dropdown-item" href="/logout">Log Out</a>
+                        
+                        </ul>
+                        </div>
+
+                            </form></ul>
+                            
+                {{else}}
+                            <form class="navbar-form navbar-right">
+                                <a href="/register" class="btn btn-register" ><span class="bi bi-cog"></span>&nbsp;&nbsp;Register</a>
+                                <a href="/login" class="btn btn-login"><span class="bi bi-chevron-right"></span>&nbsp;&nbsp;Log In</a>
+                            </form>
+                {{/if}}                
+                </div>
             </div>
         </div>
     </nav>

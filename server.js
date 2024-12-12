@@ -1,4 +1,5 @@
-/*WEB322 – Assignment 5 & 4 & 3 & 2
+/***************************************************************************
+ * WEB322 – Assignment 6 & 5 & 4 & 3 & 2
 I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this assignment has
 been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
 
@@ -9,15 +10,29 @@ Render Web App URL:    https://web322-app-bohj.onrender.com/shop
 GitHub Repository URL: https://github.com/Baharpa/web322-app
 SSH:                   git@github.com:Baharpa/web322-app.git
 ********************************************************************************/
+
 const multer = require("multer");             
 const cloudinary = require("cloudinary").v2;  
 const streamifier = require("streamifier");  
 const { title } = require('process');
-
 const express = require('express');
 const path = require("path");
 const exphbs = require('express-handlebars');
-const storeService = require("./store-service")
+const storeService = require("./store-service");
+const app = express();
+const upload = multer();
+
+//two new ones: 
+const bcrypt = require('bcryptjs');
+const authData= require('./auth-service');
+const clientSessions = require("client-sessions");
+
+
+const HTTP_PORT = process.env.PORT || 8080;
+
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+
 
 cloudinary.config({
     cloud_name: "db92vv0cb",
@@ -26,12 +41,78 @@ cloudinary.config({
     secure: true,
 });
 
-const upload = multer();
-const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
 
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(clientSessions({
+    cookieName: "session", 
+    secret: "mySecretKey12345",
+    duration: 24 * 60 * 60 * 1000,
+    activeDuration: 1000 * 60 * 5 
+}));
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
+
+function ensureLogin(req, res, next) {
+	if (!req.session.user) {
+	  res.redirect('/login');
+	} else {
+	  next();
+	}
+  }
+
+  app.get("/register", (req, res) => {
+    res.render("register");
+});
+
+
+app.post("/register", (req, res) => {
+    authData.registerUser(req.body)
+        .then(() => {
+            res.render("register", { successMessage: "User created" });
+        })
+        .catch((err) => {
+            res.render("register", { errorMessage: err, userName: req.body.userName });
+        });
+});
+
+app.get("/login", (req, res) => {
+    res.render("login");
+});
+app.post("/login", (req, res) => {
+    req.body.userAgent = req.get('User-Agent'); 
+    authData.checkUser(req.body)
+        .then((user) => {
+            req.session.user = {
+                userName: user.userName,
+                email: user.email,
+                loginHistory: user.loginHistory  
+            };
+
+            res.redirect("/items");
+        })
+        .catch((err) => {
+            res.render("login", { errorMessage: err, userName: req.body.userName });
+        });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.reset(); 
+    res.redirect("/");
+});
+
+app.get("/userHistory", ensureLogin, (req, res) => {
+    res.render("userHistory");
+});
+
+app.use(function (req, res, next) {
+	let route = req.path.substring(1);
+	app.locals.activeRoute =
+	  "/" + (isNaN(route.split("/")[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
+	app.locals.viewingCategory = req.query.category;
+	next();
+});
+
 
 app.use(function(req, res, next) {
     let route = req.path.substring(1);
@@ -98,7 +179,7 @@ app.get('/shop', (req, res) => {
                 console.error(`Error fetching item by ID ${id}:`, err);
                 res.render('shop', {
                     items: [],
-                    message: 'An error occurred while fetching the item.',
+                    message: `Error fetching item: ${err.message}`,
                     title: 'Shop'
                 });
             });
@@ -109,17 +190,31 @@ app.get('/shop', (req, res) => {
                     .then((categories) => {
                         res.render('shop', { items, categories, title: 'Shop' });
                     })
-                    .catch(() => {
-                        res.render('shop', { items, message: "No categories found.", title: 'Shop' });
+                    .catch((err) => {
+                        console.error('Error fetching categories:', err);
+                        res.render('shop', {
+                            items,
+                            message: `Error fetching categories: ${err.message}`,
+                            title: 'Shop'
+                        });
                     });
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error('Error fetching items by category:', err);
                 storeService.getCategories()
                     .then((categories) => {
-                        res.render('shop', { categories, message: "No items found.", title: 'Shop' });
+                        res.render('shop', {
+                            categories,
+                            message: `Error fetching items: ${err.message}`,
+                            title: 'Shop'
+                        });
                     })
-                    .catch(() => {
-                        res.render('shop', { message: "No items or categories found.", title: 'Shop' });
+                    .catch((err) => {
+                        console.error('Error fetching categories:', err);
+                        res.render('shop', {
+                            message: `Error fetching items and categories: ${err.message}`,
+                            title: 'Shop'
+                        });
                     });
             });
     } else {
@@ -129,17 +224,31 @@ app.get('/shop', (req, res) => {
                     .then((categories) => {
                         res.render('shop', { items, categories, title: 'Shop' });
                     })
-                    .catch(() => {
-                        res.render('shop', { items, message: "No categories found.", title: 'Shop' });
+                    .catch((err) => {
+                        console.error('Error fetching categories:', err);
+                        res.render('shop', {
+                            items,
+                            message: `Error fetching categories: ${err.message}`,
+                            title: 'Shop'
+                        });
                     });
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error('Error fetching all items:', err);
                 storeService.getCategories()
                     .then((categories) => {
-                        res.render('shop', { categories, message: "No items found.", title: 'Shop' });
+                        res.render('shop', {
+                            categories,
+                            message: `Error fetching items: ${err.message}`,
+                            title: 'Shop'
+                        });
                     })
-                    .catch(() => {
-                        res.render('shop', { message: "No items or categories found.", title: 'Shop' });
+                    .catch((err) => {
+                        console.error('Error fetching categories:', err);
+                        res.render('shop', {
+                            message: `Error fetching items and categories: ${err.message}`,
+                            title: 'Shop'
+                        });
                     });
             });
     }
@@ -375,11 +484,13 @@ app.use((req, res) => {
 })
 
 storeService.initialize()
-    .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log(`Express http server listening on port: ${HTTP_PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error("Unable to start the server:", err);
-    })
+.then(authData.initialize)
+.then(() => {
+    app.listen(HTTP_PORT, () => {
+        console.log(`Express http server listening on port: ${HTTP_PORT}`);
+    });
+})
+.catch((err) => {
+    console.error("Unable to start the server:", err);
+});
+

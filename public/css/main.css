@@ -181,3 +181,24 @@ p {
 .pagination a:hover {
     background-color: #e1bcff;
 }
+.btn-login{
+    background-color: rgb(81, 45, 156);
+    border: 1px solid rgb(82, 28, 133);
+    color:white
+}
+.btn-login:hover{
+    background-color: rgb(139, 88, 186);
+    border: 1px solid rgb(191, 157, 223);
+    color: white;
+}
+
+.btn-register{
+    background-color: rgb(233, 64, 188);
+    border: 1px solid rgb(234, 78, 189);
+    color:white
+}
+.btn-register:hover{
+    background-color: rgb(230, 115, 197);
+    border: 1px solid rgb(217, 106, 197);
+    color: white;
+}
