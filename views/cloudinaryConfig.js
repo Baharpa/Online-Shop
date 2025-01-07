@@ -1,4 +1,4 @@
-onst cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
     cloud_name: 'db92vv0cb',

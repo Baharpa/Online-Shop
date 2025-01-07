@@ -1,4 +1,4 @@
-onst Sequelize = require('sequelize');
+const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize("shop", "shop_owner", "HI52KYJemuwS", {
     host: "ep-green-lab-a53ohy4h.us-east-2.aws.neon.tech",
