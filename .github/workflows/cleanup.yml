@@ -1,0 +1,19 @@
+name: Cleanup Deployments
+
+on:
+  workflow_dispatch: # Trigger manually
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-22.04 # Explicitly specify Ubuntu 22.04 for now
+
+    permissions:
+      write-all: true
+
+    steps:
+      - name: 🗑 Delete deployment
+        uses: strumwolf/delete-deployment-environment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: github-pages
+          onlyRemoveDeployments: true
