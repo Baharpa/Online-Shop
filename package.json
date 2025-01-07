@@ -1,7 +1,7 @@
 {
-  "name": "web322-app",
+  "name": "Recipe Hub",
   "version": "1.0.0",
-  "description": "assignment 2",
+  "description": "Recipe Hub to find many recipes",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
