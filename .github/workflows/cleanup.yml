@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-22.04 # Explicitly specify Ubuntu 22.04 for now
 
     permissions:
-      write-all: true
+      deployments: write # Correct permission for modifying deployments
 
     steps:
       - name: 🗑 Delete deployment
