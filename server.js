@@ -1,16 +1,3 @@
-/***************************************************************************
- * WEB322 – Assignment 6 & 5 & 4 & 3 & 2
-I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this assignment has
-been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
-
-Name:                  Bahar Parsaeian
-Student ID:            118314210
-Date:                  2024-12-03
-Render Web App URL:    https://web322-app-bohj.onrender.com/shop
-GitHub Repository URL: https://github.com/Baharpa/web322-app
-SSH:                   git@github.com:Baharpa/web322-app.git
-********************************************************************************/
-
 const multer = require("multer");             
 const cloudinary = require("cloudinary").v2;  
 const streamifier = require("streamifier");  
@@ -22,7 +9,7 @@ const storeService = require("./store-service");
 const app = express();
 const upload = multer();
 
-//two new ones: 
+
 const bcrypt = require('bcryptjs');
 const authData= require('./auth-service');
 const clientSessions = require("client-sessions");
